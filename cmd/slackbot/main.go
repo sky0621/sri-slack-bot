@@ -14,10 +14,6 @@ import (
 )
 
 func main() {
-	// token := flag.String("t", "dummyToken", "API Token")
-	// flag.Parse()
-	// log.Println(*token)
-
 	SetupLog(".")
 	log.Println("App Start")
 
@@ -25,18 +21,10 @@ func main() {
 	mux.HandleFunc("/slackbot/", handleMsg)
 	log.Println("Server Start")
 	graceful.Run(":8140", 1*time.Second, mux)
-
-	// resp, err := http.Get("https://slack.com/api/auth.test?token=" + *token + "&pretty=1")
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// defer resp.Body.Close()
-	// byteArray, _ := ioutil.ReadAll(resp.Body)
-	// log.Println(string(byteArray))
 }
 
 func handleMsg(w http.ResponseWriter, r *http.Request) {
-	const fname = "handleMovies"
+	const fname = "handleMsg"
 	log.Println(fname, "START")
 
 	switch r.Method {
@@ -45,7 +33,15 @@ func handleMsg(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Form)
 
 		sa := r.Form["text"]
-		res := map[string]string{"text": strings.Join(sa, "|")}
+		res := map[string]string{"text": strings.Join(sa, "|") + " ？"}
+		unames := r.Form["user_name"]
+		for _, uname := range unames {
+			if strings.Contains(uname, "slackbot") {
+				res = map[string]string{"text": ""}
+				respond(w, r, http.StatusOK, res)
+				return
+			}
+		}
 		respond(w, r, http.StatusOK, res)
 	default:
 	}

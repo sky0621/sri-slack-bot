@@ -2,9 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/stretchr/graceful"
@@ -14,6 +17,8 @@ func main() {
 	// token := flag.String("t", "dummyToken", "API Token")
 	// flag.Parse()
 	// log.Println(*token)
+
+	SetupLog(".")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/slackbot/", handleMsg)
@@ -57,4 +62,19 @@ func respond(w http.ResponseWriter, r *http.Request, status int, data interface{
 	if data != nil {
 		encodeBody(w, r, data)
 	}
+}
+
+// SetupLog ...
+func SetupLog(outputDir string) (*os.File, error) {
+	logfile, err := os.OpenFile(filepath.Join(outputDir, "slackbot.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Printf("[%s]のログファイル「slackbot.log」オープンに失敗しました。 [ERROR]%s\n", outputDir, err)
+		return nil, err
+	}
+
+	// [MEMO]内容に応じて出力するファイルを切り替える場合はどうするんだ・・・？
+	log.SetOutput(io.MultiWriter(logfile, os.Stdout))
+	log.SetFlags(log.Ldate | log.Ltime)
+
+	return logfile, nil
 }

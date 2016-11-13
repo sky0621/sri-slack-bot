@@ -19,9 +19,11 @@ func main() {
 	// log.Println(*token)
 
 	SetupLog(".")
+	log.Println("App Start")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/slackbot/", handleMsg)
+	log.Println("Server Start")
 	graceful.Run(":8140", 1*time.Second, mux)
 
 	// resp, err := http.Get("https://slack.com/api/auth.test?token=" + *token + "&pretty=1")

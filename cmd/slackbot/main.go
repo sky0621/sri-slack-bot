@@ -3,11 +3,11 @@ package main
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/stretchr/graceful"
@@ -41,16 +41,11 @@ func handleMsg(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
-		res := map[string]string{"text": "African or European?"}
-		log.Printf("%+v\n", r)
-		ba, err := ioutil.ReadAll(r.Body)
-		var v interface{}
-		err = json.Unmarshal(ba, v)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		log.Printf("%+v\n", string(ba))
+		r.ParseForm()
+		log.Println(r.Form)
+
+		sa := r.Form["text"]
+		res := map[string]string{"text": strings.Join(sa, "|")}
 		respond(w, r, http.StatusOK, res)
 	default:
 	}

@@ -44,6 +44,8 @@ func handleMsg(w http.ResponseWriter, r *http.Request) {
 		res := map[string]string{"text": "African or European?"}
 		log.Printf("%+v\n", r)
 		ba, err := ioutil.ReadAll(r.Body)
+		var v interface{}
+		err = json.Unmarshal(ba, v)
 		if err != nil {
 			log.Println(err)
 			return

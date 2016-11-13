@@ -13,3 +13,8 @@ value2
 --------------------------92893b97912279bb--
 
 2016/11/14 05:48:04 handleMovies END
+2016/11/14 06:30:29 App Start
+2016/11/14 06:30:29 Server Start
+2016/11/14 06:30:36 handleMovies START
+2016/11/14 06:30:36 &{Method:POST URL:/slackbot/ Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[Content-Length:[246] Expect:[100-continue] Content-Type:[multipart/form-data; boundary=------------------------0ce273abaa03ebb1] User-Agent:[curl/7.50.1] Accept:[*/*]] Body:0xc04200a440 ContentLength:246 TransferEncoding:[] Close:false Host:localhost:8140 Form:map[] PostForm:map[] MultipartForm:<nil> Trailer:map[] RemoteAddr:[::1]:59503 RequestURI:/slackbot/ TLS:<nil> Cancel:<nil> Response:<nil> ctx:0xc042008400}
+2016/11/14 06:30:36 invalid character '-' in numeric literal
